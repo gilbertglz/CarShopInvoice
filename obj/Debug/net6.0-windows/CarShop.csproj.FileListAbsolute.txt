@@ -5,7 +5,6 @@ C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\bin\Debug\net6.0-windows\CarShop
 C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\bin\Debug\net6.0-windows\ref\CarShop.dll
 C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\bin\Debug\net6.0-windows\CarShop.pdb
 C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop.csproj.AssemblyReference.cache
-C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop.Form1.resources
 C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop.csproj.GenerateResource.cache
 C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop.AssemblyInfoInputs.cache
@@ -15,3 +14,5 @@ C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop
 C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\ref\CarShop.dll
 C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop.pdb
 C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop.genruntimeconfig.cache
+C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop.InputDialog.resources
+C:\Users\gilbe\OneDrive\Desktop\Scripts\CarShop\obj\Debug\net6.0-windows\CarShop.MainForm.resources
