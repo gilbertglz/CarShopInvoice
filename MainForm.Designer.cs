@@ -39,7 +39,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.addItem = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -147,23 +147,23 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Enter Price per Item:";
             // 
-            // button1
+            // addItem
             // 
-            this.button1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.Location = new System.Drawing.Point(626, 48);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(81, 25);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Add Item";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.addItem.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.addItem.Location = new System.Drawing.Point(626, 48);
+            this.addItem.Name = "addItem";
+            this.addItem.Size = new System.Drawing.Size(81, 25);
+            this.addItem.TabIndex = 6;
+            this.addItem.Text = "Add Item";
+            this.addItem.UseVisualStyleBackColor = true;
+            this.addItem.Click += new System.EventHandler(this.addItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 543);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.addItem);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
@@ -171,6 +171,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainFormClose);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -194,6 +195,6 @@
         private GroupBox groupBox1;
         private GroupBox groupBox2;
         private GroupBox groupBox3;
-        private Button button1;
+        private Button addItem;
     }
 }

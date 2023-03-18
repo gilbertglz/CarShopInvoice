@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace CarShop
+﻿namespace CarShop
 {
     public partial class InputDialog : Form
     {
@@ -20,16 +10,16 @@ namespace CarShop
             InitializeComponent();
         }
         private void InputDialog_Close(object sender, EventArgs e)
-        { 
+        {
             MainForm.Show();
             this.Close();
         }
         private void setNewItem(string newItem)
         {
-            this.Item = newItem; 
+            this.Item = newItem;
         }
         public string getNewItem()
-        { 
+        {
             return this.Item;
         }
         private void submitInputDialog_Click(object sender, EventArgs e)
