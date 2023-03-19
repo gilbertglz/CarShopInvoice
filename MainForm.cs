@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.Data;
+
 namespace CarShop
 {
     public partial class MainForm : Form
@@ -6,6 +9,9 @@ namespace CarShop
         private int tableRows = 0;
         public bool updatedItemsFlag = false;
         public string pwd = "C:\\Users\\gilbe\\OneDrive\\Desktop\\Scripts\\CarShop";
+        public string[,,] invoiceTable = { };
+        //DataGridViewData
+        public List<string> invoiceList = new List<string>();
         public MainForm()
         {
             InitializeComponent();
@@ -64,13 +70,35 @@ namespace CarShop
         private void addItem_Click(object sender, EventArgs e)
         {
             InputDialog s = new InputDialog(this);
+
             if (comboBox1.SelectedIndex == 1)
             {
-                //MessageBox.Show("Selected Not ON List");
+                //TODO: Check if added Item is already in list & ask if it should be selected
                 this.Hide();
                 s.ShowDialog();
+                updateItemList(s.getNewItem());
             }
-            updateItemList(s.getNewItem());
+            else
+            {
+                string itemSold = (string) comboBox1.SelectedItem;
+                var quantity = textBox1.Text.Trim();
+                var price = textBox2.Text.Trim();
+                //Simple Multiplication for Total of Row
+                double a = double.Parse(quantity), b = Math.Round(double.Parse(price),2) , total = a * b;
+                //Monetary decimal format
+                price = "$" + b.ToString("#.00");
+                string strTotal = "$" + Math.Round(total,2).ToString("#.00");
+                //push to data table in strings only
+                dataGridView1.Rows.Add(itemSold,quantity,price,strTotal);
+                //clear the selections from above
+                clearFinishedSelection();
+            }
+        }
+        private void clearFinishedSelection()
+        {
+            comboBox1.SelectedIndex = 0;
+            textBox1.Text = "";
+            textBox2.Text = "";
         }
         private void MainFormClose(object sender, EventArgs e)
         {
