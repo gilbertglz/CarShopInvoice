@@ -1,17 +1,12 @@
-using System.ComponentModel;
-using System.Data;
-
 namespace CarShop
 {
     public partial class MainForm : Form
     {
-        private string[,] tableItems = { };
-        private int tableRows = 0;
-        public bool updatedItemsFlag = false;
+        private string[,] dropDownItems = { };
+        private int dropDownRows = 0;
+        public bool updatedDropDown = false;
         public string pwd = "C:\\Users\\gilbe\\OneDrive\\Desktop\\Scripts\\CarShop";
-        public string[,,] invoiceTable = { };
-        //DataGridViewData
-        public List<string> invoiceList = new List<string>();
+        public List<string> invoiceList = new ();
         public MainForm()
         {
             InitializeComponent();
@@ -39,39 +34,34 @@ namespace CarShop
         }
         private void setTableItems(string[,] items, int rows)
         {
-            this.tableItems = items;
-            this.tableRows = rows;
-        }
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+            this.dropDownItems = items;
+            this.dropDownRows = rows;
         }
         private void updateItemList(string newItemAdded)
         {
             comboBox1.Items.Add(newItemAdded);
-            int addRow = this.tableRows;
+            int addRow = this.dropDownRows;
             string[,] updatedItems = new string[addRow + 1, 2];
             for (int i = 0; i < addRow; i++)
             {
                 for (int j = 0; j < 2; j++)
                 {
-                    updatedItems[i, j] = this.tableItems[i, j];
+                    updatedItems[i, j] = this.dropDownItems[i, j];
                 }
             }
             updatedItems[addRow, 0] = addRow.ToString();
             updatedItems[addRow, 1] = newItemAdded;
             setTableItems(updatedItems, addRow + 1);
-            this.updatedItemsFlag = true;
+            this.updatedDropDown = true;
         }
         private void addItem_Click(object sender, EventArgs e)
         {
-            InputDialog s = new InputDialog(this);
-
-            if (comboBox1.SelectedIndex == 1)
+            InputDialog s = new (this);
+            if (comboBox1.SelectedIndex == 0)
+            {
+                MessageBox.Show("Error: Empty Input on Item Selection");
+            }
+            else if (comboBox1.SelectedIndex == 1)
             {
                 //TODO: Check if added Item is already in list & ask if it should be selected
                 this.Hide();
@@ -80,18 +70,30 @@ namespace CarShop
             }
             else
             {
-                string itemSold = (string) comboBox1.SelectedItem;
+                string itemSold = (string)comboBox1.SelectedItem;
                 var quantity = textBox1.Text.Trim();
                 var price = textBox2.Text.Trim();
-                //Simple Multiplication for Total of Row
-                double a = double.Parse(quantity), b = Math.Round(double.Parse(price),2) , total = a * b;
-                //Monetary decimal format
-                price = "$" + b.ToString("#.00");
-                string strTotal = "$" + Math.Round(total,2).ToString("#.00");
-                //push to data table in strings only
-                dataGridView1.Rows.Add(itemSold,quantity,price,strTotal);
-                //clear the selections from above
-                clearFinishedSelection();
+                //No inputs
+                if (quantity == "" || price == "")
+                {
+                    var error = quantity == null ? "Quantity" : "Price Per Item";
+                    MessageBox.Show("Error: Empty Input on " + error);
+                }
+                else
+                {
+                    //Simple Multiplication for Total of Row
+                    double a = double.Parse(quantity), b = Math.Round(double.Parse(price), 2), total = a * b;
+                    //Monetary decimal format
+                    price = "$" + b.ToString("#.00");
+                    string strTotal = "$" + Math.Round(total, 2).ToString("#.00");
+                    //push to data table in strings only
+                    dataGridView1.Rows.Add(itemSold, quantity, price, strTotal);
+                    int dataGridRows = dataGridView1.Rows.Count - 2;
+                    dataGridView1.Rows[dataGridRows].HeaderCell.Value = "X";
+                    //dataGridView1.Rows[dataGridRows].HeaderCell.
+                    //clear the selections from above
+                    clearFinishedSelection();
+                }
             }
         }
         private void clearFinishedSelection()
@@ -100,14 +102,25 @@ namespace CarShop
             textBox1.Text = "";
             textBox2.Text = "";
         }
+        private void deleteRow(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Delete this Row?","Delete Row", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+                //remove row if approved
+                int h = (int) e.RowIndex;
+                dataGridView1.Rows.RemoveAt(h);
+                dataGridView1.Update();
+            }
+        }
         private void MainFormClose(object sender, EventArgs e)
         {
-            if(updatedItemsFlag)
-                updateTxtCacheFile(this.tableItems, this.tableRows);
+            if (updatedDropDown)
+                updateTxtCacheFile(this.dropDownItems, this.dropDownRows);
         }
         private void updateTxtCacheFile(string[,] saveTable, int rows)
         {
-            StreamWriter s = new StreamWriter(this.pwd + "\\Items.txt");
+            StreamWriter s = new (this.pwd + "\\Items.txt");
             using (s)
             {
                 for (int i = 0; i < rows; i++)

@@ -9,5 +9,4 @@
     <Platforms>AnyCPU;x86</Platforms>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
-
 </Project>
