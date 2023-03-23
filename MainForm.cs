@@ -1,3 +1,4 @@
+
 namespace CarShop
 {
     public partial class MainForm : Form
@@ -6,7 +7,7 @@ namespace CarShop
         private int dropDownRows = 0;
         public bool updatedDropDown = false;
         public string pwd = "C:\\Users\\gilbe\\OneDrive\\Desktop\\Scripts\\CarShop";
-        public List<string> invoiceList = new ();
+        public List<string> invoiceList = new();
         public MainForm()
         {
             InitializeComponent();
@@ -56,7 +57,7 @@ namespace CarShop
         }
         private void addItem_Click(object sender, EventArgs e)
         {
-            InputDialog s = new (this);
+            InputDialog s = new(this);
             if (comboBox1.SelectedIndex == 0)
             {
                 MessageBox.Show("Error: Empty Input on Item Selection");
@@ -104,11 +105,11 @@ namespace CarShop
         }
         private void deleteRow(object sender, DataGridViewCellMouseEventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("Delete this Row?","Delete Row", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dialogResult = MessageBox.Show("Delete this Row?", "Delete Row", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
                 //remove row if approved
-                int h = (int) e.RowIndex;
+                int h = (int)e.RowIndex;
                 dataGridView1.Rows.RemoveAt(h);
                 dataGridView1.Update();
             }
@@ -120,7 +121,7 @@ namespace CarShop
         }
         private void updateTxtCacheFile(string[,] saveTable, int rows)
         {
-            StreamWriter s = new (this.pwd + "\\Items.txt");
+            StreamWriter s = new(this.pwd + "\\Items.txt");
             using (s)
             {
                 for (int i = 0; i < rows; i++)
@@ -129,6 +130,11 @@ namespace CarShop
                 }
             }
             s.Close();
+        }
+
+        private void print_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
