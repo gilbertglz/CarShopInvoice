@@ -10,6 +10,8 @@ namespace CarShop
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
+            System.Diagnostics.Trace.Listeners.Clear();
+            System.Diagnostics.Trace.Listeners.Add(new System.Diagnostics.DefaultTraceListener());
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm());
         }

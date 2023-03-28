@@ -2,7 +2,3 @@ ID	Item
 1	Paint Job
 2	Lights
 3	Labor
-4	Tires
-5	Bumper
-6	Rims
-7	Muffler

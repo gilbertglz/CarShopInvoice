@@ -1,12 +1,18 @@
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace CarShop
 {
+
     public partial class MainForm : Form
     {
         private string[,] dropDownItems = { };
         private int dropDownRows = 0;
         public bool updatedDropDown = false;
-        public string pwd = "C:\\Users\\gilbe\\OneDrive\\Desktop\\Scripts\\CarShop";
+        public string pwd = "C:\\Users\\gilbe\\OneDrive\\Desktop\\Scripts\\gilbertglz\\CarShopInvoice";
         public List<string> invoiceList = new();
         public MainForm()
         {
@@ -57,7 +63,6 @@ namespace CarShop
         }
         private void addItem_Click(object sender, EventArgs e)
         {
-            InputDialog s = new(this);
             if (comboBox1.SelectedIndex == 0)
             {
                 MessageBox.Show("Error: Empty Input on Item Selection");
@@ -66,8 +71,25 @@ namespace CarShop
             {
                 //TODO: Check if added Item is already in list & ask if it should be selected
                 this.Hide();
-                s.ShowDialog();
-                updateItemList(s.getNewItem());
+                string userInput = "";
+                while (string.IsNullOrEmpty(userInput))
+                {
+                    userInput = Microsoft.VisualBasic.Interaction.InputBox("Please enter new item name:", "Input Required");
+
+                    // Check if the user clicked the Cancel button or closed the dialog
+                    if (string.IsNullOrEmpty(userInput))
+                    {
+                        MessageBox.Show("Operation cancelled.");
+                        break;
+                    }
+                }
+                if (userInput != "")
+                {
+                    updateItemList(userInput);
+                    comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
+                    addItem_Click(sender, e);
+                }
+                this.Show();
             }
             else
             {
@@ -131,10 +153,110 @@ namespace CarShop
             }
             s.Close();
         }
-
+        private List<Item> generateInvoiceList()
+        {
+            List<Item> rows = new List<Item>();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                Item s = new Item();
+                int count = 0;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value == null)
+                        break;
+                    switch (count)
+                    {
+                        case 0:
+                            s.Name = cell.Value.ToString().Trim();
+                            count++;
+                            break;
+                        case 1:
+                            s.Amount = cell.Value.ToString().Trim();
+                            count++;
+                            break;
+                        case 2:
+                            s.PricePerItem = cell.Value.ToString().Trim();
+                            count++;
+                            break;
+                        case 3:
+                            s.PriceTotal = cell.Value.ToString().Trim();
+                            count++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                rows.Add(s);
+            }
+            rows.RemoveAt(rows.Count - 1);
+            return rows;
+        }
         private void print_Click(object sender, EventArgs e)
         {
-            
+
+
+            List<Item> itemList = generateInvoiceList();
+            // Create a new PDF document
+            Document doc = new Document();
+
+            // Create a new PDF writer that writes to a memory stream
+            MemoryStream memStream = new MemoryStream();
+            PdfWriter.GetInstance(doc, memStream);
+
+            // Open the document for writing
+            doc.Open();
+            iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(pwd + "\\example-logo-png-1.png");
+            logo.ScaleToFit(100f, 100f);
+            doc.Add(logo);
+            Paragraph invoiceHeader = new Paragraph();
+            invoiceHeader.Add(new Chunk("INVOICE", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA,24f,iTextSharp.text.Font.BOLD)));
+
+            // Add a table to the document with columns for item name, amount, and price
+            PdfPTable table = new PdfPTable(4);
+            table.AddCell("Item Name");
+            table.AddCell("Amount");
+            table.AddCell("Price per Item");
+            table.AddCell("Total");
+
+            // Loop through the list of items and add a row for each item to the table
+            foreach (Item item in itemList)
+            {
+                table.AddCell(item.Name);
+                table.AddCell(item.Amount);
+                table.AddCell(item.PricePerItem);
+                table.AddCell(item.PriceTotal);
+            }
+
+            doc.Add(invoiceHeader);
+            // Add the table to the document
+            doc.Add(table);
+
+            // Close the document
+            doc.Close();
+
+            File.WriteAllBytes(pwd + "\\Invoice.pdf", memStream.ToArray());
+            MessageBox.Show("Done");
+            // Save the PDF invoice to a file
+            //File.WriteAllBytes("Invoice.pdf", memStream.ToArray());
+
+        }
+    }
+    class Item
+    {
+        public string Name { get; set; }
+        public string Amount { get; set; }
+        public string PricePerItem { get; set; }
+        public string PriceTotal { get; set; }
+
+        public Item(string name, string amount, string pricePerItem)
+        {
+            Name = name;
+            Amount = amount;
+            PricePerItem = pricePerItem;
+        }
+
+        public Item()
+        {
         }
     }
 }
