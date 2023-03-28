@@ -1,8 +1,6 @@
-using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
+using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CarShop
 {
@@ -193,11 +191,10 @@ namespace CarShop
         }
         private void print_Click(object sender, EventArgs e)
         {
-
-
             List<Item> itemList = generateInvoiceList();
+            InvoiceTemplate template = new();
             // Create a new PDF document
-            Document doc = new Document();
+            iTextSharp.text.Document doc = new();
 
             // Create a new PDF writer that writes to a memory stream
             MemoryStream memStream = new MemoryStream();
@@ -205,40 +202,42 @@ namespace CarShop
 
             // Open the document for writing
             doc.Open();
-            iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(pwd + "\\example-logo-png-1.png");
-            logo.ScaleToFit(100f, 100f);
-            doc.Add(logo);
-            Paragraph invoiceHeader = new Paragraph();
-            invoiceHeader.Add(new Chunk("INVOICE", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA,24f,iTextSharp.text.Font.BOLD)));
 
-            // Add a table to the document with columns for item name, amount, and price
-            PdfPTable table = new PdfPTable(4);
-            table.AddCell("Item Name");
-            table.AddCell("Amount");
-            table.AddCell("Price per Item");
-            table.AddCell("Total");
+            //Add Logo
+            doc.Add(template.invoiceLogo(pwd + "\\example-logo-png-1.png"));
 
-            // Loop through the list of items and add a row for each item to the table
-            foreach (Item item in itemList)
-            {
-                table.AddCell(item.Name);
-                table.AddCell(item.Amount);
-                table.AddCell(item.PricePerItem);
-                table.AddCell(item.PriceTotal);
-            }
+            //Add Header/Title
+            doc.Add(template.invoiceHeader("Invoice"));
+            doc.Add(template.invoiceEnter());
 
-            doc.Add(invoiceHeader);
-            // Add the table to the document
-            doc.Add(table);
+            string companyName = "Company Name", addressOne = "123 Main Street", addressTwo = "Anytown, USA 12345", 
+                invoiceNumber = "Invoice # INV123",  date = "Date: 03/14/2023",  dueDate = "Due Date: 03/21/2023";   
+            //Add Table For Top Two Columns
+            doc.Add(template.invoiceTwoColumns(companyName,addressOne,addressTwo,invoiceNumber,date,dueDate));
+            doc.Add(template.invoiceEnter());
+
+            //Customer Information
+            string customerName = "John Doe", customerAddress = "456 Park Avenue", customerAddressTwo = "Anytown, USA 12345";
+            doc.Add(template.invoiceCustomer(customerName, customerAddress, customerAddressTwo));
+            doc.Add(template.invoiceEnter());
+
+            //Items Invoice Table
+            doc.Add(template.invoiceItems(itemList));
+
+            //Invoice comments
+            string comments = "";
+            doc.Add(template.invoiceComments(comments));
+
+            //Invoice Totals
+            string subtotal="", tax="", total="";
+            doc.Add(template.invoiceTotals( subtotal,  tax,  total));
+            doc.Add(template.invoiceEnter());
 
             // Close the document
             doc.Close();
 
             File.WriteAllBytes(pwd + "\\Invoice.pdf", memStream.ToArray());
-            MessageBox.Show("Done");
-            // Save the PDF invoice to a file
-            //File.WriteAllBytes("Invoice.pdf", memStream.ToArray());
-
+            Process.Start("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", pwd + "\\Invoice.pdf");
         }
     }
     class Item
