@@ -17,6 +17,7 @@ namespace CarShop
             InitializeComponent();
             populateListDropDown();
             comboBox1.SelectedIndex = 0;
+            label1.Text = $"Tax set to {(taxPercent * 100).ToString("#0.00")}%";
         }
         private void populateListDropDown()
         {
@@ -70,18 +71,20 @@ namespace CarShop
                 //TODO: Check if added Item is already in list & ask if it should be selected
                 this.Hide();
                 string userInput = "";
+                int w = userInput.Length;
                 while (string.IsNullOrEmpty(userInput))
                 {
                     userInput = Microsoft.VisualBasic.Interaction.InputBox("Please enter new item name:", "Input Required");
 
                     // Check if the user clicked the Cancel button or closed the dialog
-                    if (string.IsNullOrEmpty(userInput))
+                    userInput.Trim();
+                    if (w == 0)
                     {
                         MessageBox.Show("Operation cancelled.");
                         break;
                     }
                 }
-                if (userInput != "")
+                if (w > 0)
                 {
                     updateItemList(userInput);
                     comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
@@ -103,7 +106,19 @@ namespace CarShop
                 else
                 {
                     //Simple Multiplication for Total of Row
-                    double a = double.Parse(quantity), b = Math.Round(double.Parse(price), 2), total = a * b;
+                    double a = 0, b = 0 , total = 0;
+                    try
+                    {
+                        a = double.Parse(quantity);
+                        b = Math.Round(double.Parse(price), 2);
+
+                    }
+                    catch (Exception error)
+                    {
+                        MessageBox.Show("ERROR: Parsing error-only numerical inputs please.\n"+error.Message.ToString());
+                        return;
+                    }
+                    total = a * b;
                     this.subtotal = this.subtotal + total;
                     this.tax = this.subtotal * taxPercent;
                     this.total = this.subtotal + tax;
@@ -199,7 +214,7 @@ namespace CarShop
         {
             List<Item> itemList = generateInvoiceList();
 
-            InformationDialog dialog = new InformationDialog(itemList, this, pwd, this.taxPercent, this.subtotal,this.total);
+            InformationDialog dialog = new InformationDialog(itemList, this, pwd, this.taxPercent, this.subtotal, this.total);
             this.Hide();
             dialog.Show();
         }
@@ -207,17 +222,19 @@ namespace CarShop
         {
             string inputText = (taxPercent * 100).ToString();
             inputText = Microsoft.VisualBasic.Interaction.InputBox("Please enter new tax in percentage:", "Input Required", inputText);
-            if (inputText != "")
+            int inputLength = inputText.Length;
+            if (inputLength > 0)
             {
-                try 
+                try
                 {
-                    this.taxPercent = double.Parse(inputText)/100;
+                    this.taxPercent = double.Parse(inputText) / 100;
                 }
-                catch(Exception error)
+                catch (Exception error)
                 {
                     MessageBox.Show(error.ToString());
                 }
             }
+            label1.Text = $"Tax set to {(taxPercent * 100).ToString("#0.00")}%";
         }
     }
     public partial class Item

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
             textBox2 = new TextBox();
@@ -48,6 +48,7 @@
             taxDoubleLabel = new Label();
             totalDoubleLabel = new Label();
             button1 = new Button();
+            label1 = new Label();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -161,8 +162,8 @@
             dataGridView1.Location = new Point(71, 116);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.ScrollBars = ScrollBars.Vertical;
@@ -246,11 +247,22 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += taxChangeButton;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Calibri", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(309, 478);
+            label1.Name = "label1";
+            label1.Size = new Size(158, 26);
+            label1.TabIndex = 18;
+            label1.Text = "Tax Set to: 8.25%";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(808, 648);
+            Controls.Add(label1);
             Controls.Add(button1);
             Controls.Add(totalDoubleLabel);
             Controls.Add(taxDoubleLabel);
@@ -265,7 +277,7 @@
             Controls.Add(dataGridView1);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form1";
+            Text = "Invoice Generator";
             FormClosed += MainFormClose;
             groupBox1.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
@@ -297,5 +309,6 @@
         private Label taxDoubleLabel;
         private Label totalDoubleLabel;
         private Button button1;
+        private Label label1;
     }
 }

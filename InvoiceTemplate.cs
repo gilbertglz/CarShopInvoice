@@ -106,12 +106,12 @@ namespace CarShop
         }
         public PdfPTable invoiceTotals(string subtotal, string tax, string total)
         {
-            PdfPTable bottomTotalsTable = new PdfPTable(1);
+            PdfPTable bottomTotalsTable = new PdfPTable(2);
             bottomTotalsTable.WidthPercentage = 50;
             bottomTotalsTable.HorizontalAlignment = Element.ALIGN_RIGHT;
             bottomTotalsTable.PaddingTop = 24f;
 
-            List<string> args = new List<string> { "Subotal: " + subtotal, "Tax: " + tax, "Total: " + total };
+            List<string> args = new List<string> { "Subotal: " , subtotal, "Tax: " , tax, "Total: " , total };
 
             foreach (string cell in args)
             {

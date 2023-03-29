@@ -54,7 +54,12 @@
             dateTimePicker1 = new DateTimePicker();
             groupBox3 = new GroupBox();
             groupBox4 = new GroupBox();
+            label5 = new Label();
+            label4 = new Label();
+            label3 = new Label();
+            label2 = new Label();
             label1 = new Label();
+            button2 = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -245,6 +250,7 @@
             taxTextBox.Name = "taxTextBox";
             taxTextBox.Size = new Size(97, 27);
             taxTextBox.TabIndex = 22;
+            taxTextBox.TextChanged += taxTextBox_TextChanged;
             // 
             // groupBox1
             // 
@@ -314,6 +320,10 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(label5);
+            groupBox4.Controls.Add(label4);
+            groupBox4.Controls.Add(label3);
+            groupBox4.Controls.Add(label2);
             groupBox4.Controls.Add(label1);
             groupBox4.Controls.Add(taxTextBox);
             groupBox4.Controls.Add(taxLabel);
@@ -323,6 +333,46 @@
             groupBox4.TabIndex = 26;
             groupBox4.TabStop = false;
             groupBox4.Text = "Tax Information";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label5.Location = new Point(151, 95);
+            label5.Name = "label5";
+            label5.Size = new Size(45, 19);
+            label5.TabIndex = 30;
+            label5.Text = "$0.00";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.Location = new Point(151, 30);
+            label4.Name = "label4";
+            label4.Size = new Size(45, 19);
+            label4.TabIndex = 29;
+            label4.Text = "$0.00";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.Location = new Point(14, 95);
+            label3.Name = "label3";
+            label3.Size = new Size(45, 19);
+            label3.TabIndex = 28;
+            label3.Text = "Total:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.Location = new Point(14, 30);
+            label2.Name = "label2";
+            label2.Size = new Size(66, 19);
+            label2.TabIndex = 27;
+            label2.Text = "Subtotal:";
             // 
             // label1
             // 
@@ -334,11 +384,23 @@
             label1.TabIndex = 23;
             label1.Text = "%";
             // 
+            // button2
+            // 
+            button2.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button2.Location = new Point(128, 373);
+            button2.Name = "button2";
+            button2.Size = new Size(92, 32);
+            button2.TabIndex = 27;
+            button2.Text = "Back";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // InformationDialog
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(827, 430);
+            Controls.Add(button2);
             Controls.Add(groupBox4);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
@@ -386,5 +448,10 @@
         private Label label1;
         private DateTimePicker dateTimePicker1;
         private DateTimePicker dateTimePicker2;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private Label label5;
+        private Button button2;
     }
 }

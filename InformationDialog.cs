@@ -20,8 +20,10 @@ namespace CarShop
             this.tax = tax;
             this.subtotal = subtotal;
             this.total = total;
+            label4.Text = subtotal.ToString("#0.00");
+            label5.Text = total.ToString("#0.00");
             populateTextBox();
-            
+
         }
         public void populateTextBox()
         {
@@ -33,7 +35,7 @@ namespace CarShop
             int invoiceNumberGen = random.Next(100, 1000);
 
             string companyName = "Company Name", addressOne = "123 Main Street", addressTwo = "Anytown, USA 12345";
-            
+
             string customerName = "John Doe", customerAddress = "456 Park Avenue", customerAddressTwo = "Anytown, USA 12345";
             companyNameTextBox.Text = companyName;
             streetTextBox.Text = addressOne;
@@ -46,7 +48,7 @@ namespace CarShop
             customerNameTextBox.Text = customerName;
             customerStreetTextBox.Text = customerAddress;
             customerStreetTwoTextBox.Text = customerAddressTwo;
-            taxTextBox.Text = (this.tax * 100).ToString("#.00");
+            taxTextBox.Text = (this.tax * 100).ToString("#0.00");
         }
         private void submitButtonPrint(object sender, EventArgs e)
         {
@@ -113,6 +115,36 @@ namespace CarShop
 
             File.WriteAllBytes(this.path + "\\Invoice.pdf", memStream.ToArray());
             Process.Start("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", this.path + "\\Invoice.pdf");
+
+            MainForm newForm = new MainForm();
+            newForm.Show();
+            this.Close();
+        }
+        private void taxTextBox_TextChanged(object sender, EventArgs e)
+        {
+            double taxChange = .00825;
+            string taxDef = "0";
+            try
+            {
+                taxDef = taxTextBox.Text;
+                if (taxDef == "")
+                    taxDef = "0";
+                taxChange = double.Parse(taxDef) / 100;
+                this.tax = taxChange;
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message.ToString());
+                return;
+            };
+            this.total = this.subtotal + (this.subtotal * this.tax);
+            label5.Text = this.total.ToString("#0.00");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.parentVar.Show();
+            this.Close();
         }
     }
 }
