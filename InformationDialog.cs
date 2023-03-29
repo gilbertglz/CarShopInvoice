@@ -10,12 +10,16 @@ namespace CarShop
         public MainForm parentVar;
         public string path;
         public List<Item> items;
-        public InformationDialog(List<Item> list, MainForm parent, string filePath)
+        public double tax, subtotal, total;
+        public InformationDialog(List<Item> list, MainForm parent, string filePath, double tax, double subtotal, double total)
         {
             InitializeComponent();
             this.parentVar = parent;
             this.path = filePath;
             this.items = list;
+            this.tax = tax;
+            this.subtotal = subtotal;
+            this.total = total;
             populateTextBox();
             
         }
@@ -42,6 +46,7 @@ namespace CarShop
             customerNameTextBox.Text = customerName;
             customerStreetTextBox.Text = customerAddress;
             customerStreetTwoTextBox.Text = customerAddressTwo;
+            taxTextBox.Text = (this.tax * 100).ToString("#.00");
         }
         private void submitButtonPrint(object sender, EventArgs e)
         {
@@ -49,6 +54,10 @@ namespace CarShop
             string invoiceNumber, date, dueDate;
             string today = dateTimePicker1.Value.ToString("MM/dd/yyyy");
             string nextWeek = dateTimePicker2.Value.ToString("MM/dd/yyyy");
+            double updateTax = 8.25;
+            bool flagTax = false;
+            try { updateTax = double.Parse(taxTextBox.Text); flagTax = true; } catch (Exception error) { MessageBox.Show(error.ToString()); };
+            updateTax = updateTax / 100;
 
             invoiceNumber = $"Invoice # INV{invoiceTextBox.Text}";
             date = $"Date: {today}";
@@ -88,7 +97,14 @@ namespace CarShop
             doc.Add(template.invoiceComments(comments));
 
             //Invoice Totals
-            string subtotal = "", tax = "", total = "";
+            string subtotal = this.subtotal.ToString("#00.00");
+            if (flagTax)
+            {
+                this.tax = updateTax * this.subtotal;
+                this.total = this.tax + this.subtotal;
+            }
+            string tax = this.tax.ToString("#00.00"), total = this.total.ToString("#00.00");
+
             doc.Add(template.invoiceTotals(subtotal, tax, total));
             doc.Add(template.invoiceEnter());
 

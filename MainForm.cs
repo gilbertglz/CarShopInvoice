@@ -199,7 +199,7 @@ namespace CarShop
         {
             List<Item> itemList = generateInvoiceList();
 
-            InformationDialog dialog = new InformationDialog(itemList, this, pwd);
+            InformationDialog dialog = new InformationDialog(itemList, this, pwd, this.taxPercent, this.subtotal,this.total);
             this.Hide();
             dialog.Show();
         }
