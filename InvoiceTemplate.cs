@@ -1,6 +1,5 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Microsoft.VisualBasic;
 
 namespace CarShop
 {
@@ -19,7 +18,7 @@ namespace CarShop
             image.AddElement(logo);
             image.Border = iTextSharp.text.Rectangle.NO_BORDER;
             logoTable.AddCell(image);
-            
+
             return logoTable;
         }
         public Paragraph invoiceHeader(string header)
@@ -42,11 +41,11 @@ namespace CarShop
         }
         public PdfPTable invoiceTwoColumns(string companyName, string addressOne, string addressTwo, string invoiceNumber, string date, string dueDate)
         {
-            List<string> cells = new List<string> {companyName,invoiceNumber,addressOne,date,addressTwo,dueDate };
+            List<string> cells = new List<string> { companyName, invoiceNumber, addressOne, date, addressTwo, dueDate };
 
             PdfPTable tableAbove = new PdfPTable(2);
             tableAbove.WidthPercentage = 80;
-            foreach (string cell in cells) 
+            foreach (string cell in cells)
             {
                 PdfPCell createdCell = this.invoiceCellTable(cell);
                 createdCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
@@ -56,9 +55,9 @@ namespace CarShop
 
             return tableAbove;
         }
-        public PdfPTable invoiceCustomer(string customerName,string address, string addressTwo)
+        public PdfPTable invoiceCustomer(string customerName, string address, string addressTwo)
         {
-            List<string> args = new List<string> { "Bill to: ",customerName, address, addressTwo};
+            List<string> args = new List<string> { "Bill to: ", customerName, address, addressTwo };
             PdfPTable CustomerTable = new PdfPTable(1);
             CustomerTable.WidthPercentage = 80;
 
@@ -97,7 +96,7 @@ namespace CarShop
             commentTable.WidthPercentage = 80;
 
             // Create the left cell and add the left-aligned paragraph
-            PdfPCell commentCell = this.invoiceCellTable("Notes:"+comments);
+            PdfPCell commentCell = this.invoiceCellTable("Notes:" + comments);
             commentCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
             commentCell.PaddingTop = 20f;
             commentTable.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -112,7 +111,7 @@ namespace CarShop
             bottomTotalsTable.HorizontalAlignment = Element.ALIGN_RIGHT;
             bottomTotalsTable.PaddingTop = 24f;
 
-            List<string> args = new List<string> { "Subotal: "+subtotal,"Tax: "+tax,"Total: "+total };
+            List<string> args = new List<string> { "Subotal: " + subtotal, "Tax: " + tax, "Total: " + total };
 
             foreach (string cell in args)
             {

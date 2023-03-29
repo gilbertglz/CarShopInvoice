@@ -1,6 +1,5 @@
 using iTextSharp.text.pdf;
 using System.Diagnostics;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CarShop
 {
@@ -12,6 +11,7 @@ namespace CarShop
         public bool updatedDropDown = false;
         public string pwd = "C:\\Users\\gilbe\\OneDrive\\Desktop\\Scripts\\gilbertglz\\CarShopInvoice";
         public List<string> invoiceList = new();
+        public double subtotal, taxPercent = .0825, tax, total;
         public MainForm()
         {
             InitializeComponent();
@@ -104,6 +104,9 @@ namespace CarShop
                 {
                     //Simple Multiplication for Total of Row
                     double a = double.Parse(quantity), b = Math.Round(double.Parse(price), 2), total = a * b;
+                    this.subtotal = this.subtotal + total;
+                    this.tax = this.subtotal * taxPercent;
+                    this.total = this.subtotal + tax;
                     //Monetary decimal format
                     price = "$" + b.ToString("#.00");
                     string strTotal = "$" + Math.Round(total, 2).ToString("#.00");
@@ -113,6 +116,9 @@ namespace CarShop
                     dataGridView1.Rows[dataGridRows].HeaderCell.Value = "X";
                     //dataGridView1.Rows[dataGridRows].HeaderCell.
                     //clear the selections from above
+                    subtotalDoubleLabel.Text = this.subtotal.ToString("#0.00");
+                    taxDoubleLabel.Text = this.tax.ToString("#0.00");
+                    totalDoubleLabel.Text = this.total.ToString("#0.00");
                     clearFinishedSelection();
                 }
             }
@@ -192,55 +198,29 @@ namespace CarShop
         private void print_Click(object sender, EventArgs e)
         {
             List<Item> itemList = generateInvoiceList();
-            InvoiceTemplate template = new();
-            // Create a new PDF document
-            iTextSharp.text.Document doc = new();
 
-            // Create a new PDF writer that writes to a memory stream
-            MemoryStream memStream = new MemoryStream();
-            PdfWriter.GetInstance(doc, memStream);
-
-            // Open the document for writing
-            doc.Open();
-
-            //Add Logo
-            doc.Add(template.invoiceLogo(pwd + "\\example-logo-png-1.png"));
-
-            //Add Header/Title
-            doc.Add(template.invoiceHeader("Invoice"));
-            doc.Add(template.invoiceEnter());
-
-            string companyName = "Company Name", addressOne = "123 Main Street", addressTwo = "Anytown, USA 12345", 
-                invoiceNumber = "Invoice # INV123",  date = "Date: 03/14/2023",  dueDate = "Due Date: 03/21/2023";   
-            //Add Table For Top Two Columns
-            doc.Add(template.invoiceTwoColumns(companyName,addressOne,addressTwo,invoiceNumber,date,dueDate));
-            doc.Add(template.invoiceEnter());
-
-            //Customer Information
-            string customerName = "John Doe", customerAddress = "456 Park Avenue", customerAddressTwo = "Anytown, USA 12345";
-            doc.Add(template.invoiceCustomer(customerName, customerAddress, customerAddressTwo));
-            doc.Add(template.invoiceEnter());
-
-            //Items Invoice Table
-            doc.Add(template.invoiceItems(itemList));
-
-            //Invoice comments
-            string comments = "";
-            doc.Add(template.invoiceComments(comments));
-
-            //Invoice Totals
-            string subtotal="", tax="", total="";
-            doc.Add(template.invoiceTotals( subtotal,  tax,  total));
-            doc.Add(template.invoiceEnter());
-
-            // Close the document
-            doc.Close();
-
-            File.WriteAllBytes(pwd + "\\Invoice.pdf", memStream.ToArray());
-            Process.Start("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", pwd + "\\Invoice.pdf");
+            InformationDialog dialog = new InformationDialog(itemList, this, pwd);
+            this.Hide();
+            dialog.Show();
+        }
+        private void taxChangeButton(object sender, EventArgs e)
+        {
+            string inputText = (taxPercent * 100).ToString();
+            inputText = Microsoft.VisualBasic.Interaction.InputBox("Please enter new tax in percentage:", "Input Required", inputText);
+            if (inputText != "")
+            {
+                try 
+                {
+                    this.taxPercent = double.Parse(inputText)/100;
+                }
+                catch(Exception error)
+                {
+                    MessageBox.Show(error.ToString());
+                }
+            }
         }
     }
-    class Item
+    public partial class Item
     {
         public string Name { get; set; }
         public string Amount { get; set; }
