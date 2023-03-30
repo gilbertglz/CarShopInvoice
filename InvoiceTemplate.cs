@@ -111,7 +111,7 @@ namespace CarShop
             bottomTotalsTable.HorizontalAlignment = Element.ALIGN_RIGHT;
             bottomTotalsTable.PaddingTop = 24f;
 
-            List<string> args = new List<string> { "Subotal: " , subtotal, "Tax: " , tax, "Total: " , total };
+            List<string> args = new List<string> { "Subotal: ", subtotal, "Tax: ", tax, "Total: ", total };
 
             foreach (string cell in args)
             {

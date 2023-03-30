@@ -1,6 +1,4 @@
 ﻿using iTextSharp.text.pdf;
-using Microsoft.VisualBasic;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using System.Diagnostics;
 
 namespace CarShop

@@ -1,4 +1,0 @@
-ID	Item
-1	Paint Job
-2	Lights
-3	Labor

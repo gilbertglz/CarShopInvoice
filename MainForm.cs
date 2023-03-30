@@ -1,5 +1,4 @@
-using iTextSharp.text.pdf;
-using System.Diagnostics;
+using System.Reflection;
 
 namespace CarShop
 {
@@ -9,7 +8,7 @@ namespace CarShop
         private string[,] dropDownItems = { };
         private int dropDownRows = 0;
         public bool updatedDropDown = false;
-        public string pwd = "C:\\Users\\gilbe\\OneDrive\\Desktop\\Scripts\\gilbertglz\\CarShopInvoice";
+        public string pwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public List<string> invoiceList = new();
         public double subtotal, taxPercent = .0825, tax, total;
         public MainForm()
@@ -23,7 +22,17 @@ namespace CarShop
         {
             //get dropdown items from txt file (no server) \CarShop\Items.txt     
             string txtPath = this.pwd + "\\Items.txt";
-            string[] lines = File.ReadAllLines(txtPath);
+            string[] lines = { };
+            if (File.Exists(txtPath))
+            {
+                lines = File.ReadAllLines(txtPath);
+                // Process the file contents
+            }
+            else
+            {
+                using (File.Create(txtPath)) { }
+            }
+
             int rows = lines.Count(), columns = 2;
             string[,] table = new string[rows, columns];
             for (int i = 0; i < rows; i++)
@@ -78,6 +87,7 @@ namespace CarShop
 
                     // Check if the user clicked the Cancel button or closed the dialog
                     userInput.Trim();
+                    w = userInput.Length;
                     if (w == 0)
                     {
                         MessageBox.Show("Operation cancelled.");
@@ -106,7 +116,7 @@ namespace CarShop
                 else
                 {
                     //Simple Multiplication for Total of Row
-                    double a = 0, b = 0 , total = 0;
+                    double a = 0, b = 0, total = 0;
                     try
                     {
                         a = double.Parse(quantity);
@@ -115,7 +125,7 @@ namespace CarShop
                     }
                     catch (Exception error)
                     {
-                        MessageBox.Show("ERROR: Parsing error-only numerical inputs please.\n"+error.Message.ToString());
+                        MessageBox.Show("ERROR: Parsing error-only numerical inputs please.\n" + error.Message.ToString());
                         return;
                     }
                     total = a * b;
@@ -162,15 +172,18 @@ namespace CarShop
         }
         private void updateTxtCacheFile(string[,] saveTable, int rows)
         {
-            StreamWriter s = new(this.pwd + "\\Items.txt");
-            using (s)
+            string filePath = Path.Combine(pwd, "Items.txt");
+
+            using (StreamWriter writer = new StreamWriter(filePath, false))
             {
                 for (int i = 0; i < rows; i++)
                 {
-                    s.WriteLine(saveTable[i, 0] + "\t" + saveTable[i, 1]);
+                    writer.WriteLine(saveTable[i, 0] + "\t" + saveTable[i, 1]);
                 }
+
+                writer.Flush();
+                writer.Close();
             }
-            s.Close();
         }
         private List<Item> generateInvoiceList()
         {
