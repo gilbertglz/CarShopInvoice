@@ -21,7 +21,7 @@ namespace CarShop
         private void populateListDropDown()
         {
             //get dropdown items from txt file (no server) \CarShop\Items.txt     
-            string txtPath = this.pwd + "\\Items.txt";
+            string txtPath = Path.Combine(pwd, "Items.txt");
             string[] lines = { };
             if (File.Exists(txtPath))
             {

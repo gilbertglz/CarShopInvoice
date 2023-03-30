@@ -1,5 +1,9 @@
 ﻿using iTextSharp.text.pdf;
+using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.Logging;
+using Org.BouncyCastle.Crypto.Generators;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 
 namespace CarShop
 {
@@ -74,7 +78,7 @@ namespace CarShop
             doc.Open();
 
             //Add Logo
-            doc.Add(template.invoiceLogo(path + "\\example-logo-png-1.png"));
+            doc.Add(template.invoiceLogo("C:\\Users\\gilbe\\OneDrive\\Desktop\\Scripts\\gilbertglz\\CarShopInvoice\\example-logo-png-1.png"));
 
             //Add Header/Title
             doc.Add(template.invoiceHeader("Invoice"));
