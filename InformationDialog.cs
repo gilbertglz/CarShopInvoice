@@ -116,8 +116,7 @@ namespace CarShop
             doc.Close();
 
             File.WriteAllBytes(this.path + "\\Invoice.pdf", memStream.ToArray());
-            Process.Start("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", this.path + "\\Invoice.pdf");
-
+            
             MainForm newForm = new MainForm();
             newForm.Show();
             this.Close();
